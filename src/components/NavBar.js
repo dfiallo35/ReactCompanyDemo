@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { useHistory } from "react-router-dom";
 
 import {
@@ -14,7 +14,7 @@ import {
     Avatar,
     Box,
 } from "@mui/material";
-import { Menu, ExitToApp, Home, People } from "@mui/icons-material";
+import { ExitToApp, Home, People } from "@mui/icons-material";
 
 import AuthContext from "../context/AuthContext";
 
@@ -23,15 +23,10 @@ const drawerWidth = 240;
 
 
 const NavBar = () => {
-    const [open, setOpen] = useState(false);
     const { userData, logout } = useContext(AuthContext);
 
     const history = useHistory();
     
-    const toggleMenu = () => {
-        setOpen(!open);
-    };
-
     const handleLogout = () => {
         logout();
         history.push("/login");
@@ -39,11 +34,8 @@ const NavBar = () => {
 
     return (
         <>
-            <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+            <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, ml: drawerWidth }}>
                 <Toolbar>
-                    <IconButton color="inherit" edge="start" sx={{ mr: 2 }} onClick={toggleMenu}>
-                        <Menu />
-                    </IconButton>
                     <Typography variant="h6" sx={{ flexGrow: 1 }}>
                         Company Logo
                     </Typography>
@@ -57,15 +49,13 @@ const NavBar = () => {
             </AppBar>
             
             <Drawer
-                variant="temporary"
+                variant="persistent"
                 anchor="left"
-                open={open}
-                onClose={toggleMenu}
-
+                open
                 sx={{
-                width: drawerWidth,
-                flexShrink: 0,
-                [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: "border-box" },
+                    width: drawerWidth,
+                    flexShrink: 0,
+                    [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: "border-box" },
                 }}
             >
                 <Toolbar />
@@ -86,7 +76,7 @@ const NavBar = () => {
                     </ListItem>
                     <ListItem button onClick={() => history.push("/clients")}>
                         <ListItemIcon>
-                            <People color="secondary" />
+                            <People color="primary" />
                         </ListItemIcon>
                         <ListItemText primary="Consult Clients" />
                     </ListItem>

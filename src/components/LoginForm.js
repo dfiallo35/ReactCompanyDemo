@@ -61,7 +61,7 @@ const LoginForm = () => {
                 minHeight="100vh"
             >
                 <Typography variant="h5" gutterBottom>
-                Iniciar Sesión
+                Log In
                 </Typography>
                 {error && <Alert severity="error">{error}</Alert>}
 

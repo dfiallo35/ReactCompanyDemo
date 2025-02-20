@@ -62,15 +62,15 @@ const ClientListPage = () => {
             <Box component="main" sx={{ flexGrow: 1, p: 3, bgcolor: "#f5f5f5", minHeight: "100vh" }}>
                 {/* Search and Actions */}
                 <Box mt={8} p={2} component={Paper}>
-                    <Typography variant="h5">Consulta de clientes</Typography>
+                    <Typography variant="h5">Consult Clients</Typography>
                     <Box display="flex" gap={2} my={2}>
-                        <TextField fullWidth label="Nombre" variant="outlined" size="small" />
-                        <TextField fullWidth label="Identificación" variant="outlined" size="small" />
+                        <TextField fullWidth label="Name" variant="outlined" size="small" />
+                        <TextField fullWidth label="Identification" variant="outlined" size="small" />
                         <IconButton color="primary"><Search /></IconButton>
                     </Box>
                     <Box display="flex" justifyContent="flex-end" gap={1}>
-                        <Button variant="contained" startIcon={<Add />} onClick={() => history.push("/clients/new")}>Agregar</Button>
-                        <Button variant="outlined" startIcon={<ArrowBack />} onClick={() => history.push("/")}>Regresar</Button>
+                        <Button variant="contained" startIcon={<Add />} onClick={() => history.push("/clients/new")}>Add</Button>
+                        <Button variant="outlined" startIcon={<ArrowBack />} onClick={() => history.push("/")}>Back</Button>
                     </Box>
                 </Box>
 
@@ -79,9 +79,9 @@ const ClientListPage = () => {
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell sx={{ backgroundColor: "#1976d2", color: "white" }}>Identificación</TableCell>
-                                <TableCell sx={{ backgroundColor: "#1976d2", color: "white" }}>Nombre completo</TableCell>
-                                <TableCell sx={{ backgroundColor: "#1976d2", color: "white" }}>Acciones</TableCell>
+                                <TableCell sx={{ backgroundColor: "#1976d2", color: "white" }}>Identification</TableCell>
+                                <TableCell sx={{ backgroundColor: "#1976d2", color: "white" }}>Fullname</TableCell>
+                                <TableCell sx={{ backgroundColor: "#1976d2", color: "white" }}>Actions</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>

@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
 
-import { TextField, Button, MenuItem, Select, InputLabel, FormControl, Typography, Box, Grid } from "@mui/material";
+import { TextField, Button, MenuItem, Select, InputLabel, FormControl, Typography, Box, Grid, Avatar } from "@mui/material";
 import { Save, ArrowBack } from "@mui/icons-material";
 import { DesktopDatePicker } from "@mui/x-date-pickers";
 
@@ -97,10 +97,13 @@ const ClientMaintenancePage = () => {
         <Box sx={{ display: "flex" }}>
             <NavBar />
 
-            <Box component="main" sx={{ flexGrow: 1, p: 3, bgcolor: "#f5f5f5", minHeight: "100vh" }}>
-                <Typography variant="h5" gutterBottom>
-                    👤 Mantenimiento de clientes
-                </Typography>
+            <Box component="main" mt={8} p={2} sx={{ flexGrow: 1, p: 3, bgcolor: "#f5f5f5", minHeight: "100vh" }}>
+                <Box sx={{ display: 'flex', alignItems: 'center' }} mb={4}>
+                    <Avatar sx={{ width: 80, height: 80 }} />
+                    <Typography variant="h5" gutterBottom sx={{ ml: 2 }}>
+                        Client Maintenance
+                    </Typography>
+                </Box>
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={4}>
                         <TextField fullWidth label="Identification" name="identification" value={client.identification} onChange={handleChange} />
