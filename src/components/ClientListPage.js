@@ -24,6 +24,8 @@ const ClientListPage = () => {
     const { userData } = useContext(AuthContext);
     const [clients, setClients] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [searchName, setSearchName] = useState(null);
+    const [searchIdentification, setSearchIdentification] = useState('');
 
     const history = useHistory();
 
@@ -32,18 +34,26 @@ const ClientListPage = () => {
             ClientService.setAuthToken(userData.token);
             fetchClients();
         }
-    }, [userData]);
+    }, []);
 
-    const fetchClients = async () => {
+    const fetchClients = async (name = null, identification = "") => {
         setLoading(true);
         try {
-            const response = await ClientService.list({userId: userData?.userid})
+            const response = await ClientService.list(
+                userData?.userid,
+                name,
+                identification
+            );
             setClients(response);
         } catch (error) {
             console.error('Error fetching clients:', error);
         }
         setLoading(false);
-    }
+    };
+
+    const handleSearch = () => {
+        fetchClients(searchName, searchIdentification);
+    };
 
     const handleDelete = async (id) => {
         if (!window.confirm("Are you sure you want to delete this client?")) return;
@@ -53,10 +63,10 @@ const ClientListPage = () => {
         } catch (error) {
             console.error("Error deleting client:", error)
         }
-    }
+    };
 
     return (
-        <Box sx={{ display: "flex"}}>
+        <Box sx={{ display: "flex" }}>
             <NavBar />
 
             <Box component="main" sx={{ flexGrow: 1, p: 3, bgcolor: "#f5f5f5", minHeight: "100vh" }}>
@@ -64,9 +74,25 @@ const ClientListPage = () => {
                 <Box mt={8} p={2} component={Paper}>
                     <Typography variant="h5">Consult Clients</Typography>
                     <Box display="flex" gap={2} my={2}>
-                        <TextField fullWidth label="Name" variant="outlined" size="small" />
-                        <TextField fullWidth label="Identification" variant="outlined" size="small" />
-                        <IconButton color="primary"><Search /></IconButton>
+                        <TextField
+                            fullWidth
+                            label="Name"
+                            variant="outlined"
+                            size="small"
+                            value={searchName}
+                            onChange={(e) => setSearchName(e.target.value ? e.target.value : null)}
+                        />
+                        <TextField
+                            fullWidth
+                            label="Identification"
+                            variant="outlined"
+                            size="small"
+                            value={searchIdentification}
+                            onChange={(e) => setSearchIdentification(e.target.value)}
+                        />
+                        <IconButton color="primary" onClick={handleSearch}>
+                            <Search />
+                        </IconButton>
                     </Box>
                     <Box display="flex" justifyContent="flex-end" gap={1}>
                         <Button variant="contained" startIcon={<Add />} onClick={() => history.push("/clients/new")}>Add</Button>
@@ -112,7 +138,7 @@ const ClientListPage = () => {
                 </TableContainer>
             </Box>
         </Box>
-    )
+    );
 };
 
 export default ClientListPage;

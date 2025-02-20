@@ -61,12 +61,12 @@ class ClientService extends BaseService {
         super("/Cliente");
     }
 
-    async list({ userId }){
+    async list(userId, name = null, identification = ""){
         try {
             const response = await this.apiClient.post("/Listado", {
                 usuarioId: String(userId),
-                nombre: null,
-                identificacion: "",
+                nombre: name,
+                identificacion: identification,
             });
             const data = response.data.map(client => mapApiToClient(client))
             return data
