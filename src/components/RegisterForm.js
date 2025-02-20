@@ -1,10 +1,18 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
+
 import {
-    TextField, Button, Container, Typography, Box, Snackbar, Alert
+    TextField,
+    Button,
+    Container,
+    Typography,
+    Box,
+    Snackbar,
+    Alert
 } from "@mui/material";
 
 import AuthService from "../services/AuthenticationService";
+
 
 const RegisterForm = () => {
     const [username, setUsername] = useState("");

@@ -1,15 +1,15 @@
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import en from 'date-fns/locale/en-US';
+
 import LoginForm from "./components/LoginForm"
 import RegisterForm from './components/RegisterForm';
 import HomePage from './components/HomePage';
 import NotFoundPage from './components/NotFoundPage';
 import ClientListPage from './components/ClientListPage';
 import ClientMaintenancePage from './components/ClientMaintenancePage';
-
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import en from 'date-fns/locale/en-US';
 
 import './App.css';
 

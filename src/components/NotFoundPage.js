@@ -1,10 +1,22 @@
-import React from "react";
+import React, { useEffect, useContext } from "react";
+import { useHistory } from "react-router-dom";
+
 import { Box, Typography } from "@mui/material";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
 import NavBar from "./NavBar";
+import AuthContext from "../context/AuthContext";
 
 const NotFoundPage = () => {
+    const history = useHistory();
+    const { userData } = useContext(AuthContext);
+
+    useEffect(() => {
+        if (!userData || !userData.token) {
+            history.push("/login");
+        }
+    }, [userData, history]);
+
     return (
         <Box component="main" sx={{ flexGrow: 1, p: 3, bgcolor: "#f5f5f5", minHeight: "100vh" }}>
             <NavBar />

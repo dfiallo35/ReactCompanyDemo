@@ -1,7 +1,19 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
+
 import {
-    TextField, Button, MenuItem, Select, InputLabel, FormControl, Typography, Box, Grid, Avatar, Snackbar, Alert
+    TextField,
+    Button,
+    MenuItem,
+    Select,
+    InputLabel,
+    FormControl,
+    Typography,
+    Box,
+    Grid,
+    Avatar,
+    Snackbar,
+    Alert
 } from "@mui/material";
 import { Save, ArrowBack } from "@mui/icons-material";
 import { DesktopDatePicker } from "@mui/x-date-pickers";
@@ -50,6 +62,12 @@ const ClientMaintenancePage = () => {
             InterestService.setAuthToken(userData.token);
         }
     }, [userData]);
+
+    useEffect(() => {
+            if (!userData || !userData.token) {
+                history.push("/login");
+            }
+        }, [userData, history]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;

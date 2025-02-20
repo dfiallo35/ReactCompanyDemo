@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+
 import {
     Typography,
     IconButton,
@@ -35,6 +36,12 @@ const ClientListPage = () => {
             fetchClients();
         }
     }, []);
+
+    useEffect(() => {
+            if (!userData || !userData.token) {
+                history.push("/login");
+            }
+        }, [userData, history]);
 
     const fetchClients = async (name = null, identification = "") => {
         setLoading(true);
