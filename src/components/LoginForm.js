@@ -1,22 +1,25 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
-
 import {
-    TextField, Button, Checkbox, FormControlLabel, Container, Box, Typography, IconButton, InputAdornment, Alert
+    TextField, Button, Checkbox, FormControlLabel, Container, Box, Typography, IconButton, InputAdornment, Alert,
+    Snackbar
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 import AuthContext from "../context/AuthContext";
 
-const rememberUserName = "rememberUserName"
-const rememberPassword = "rememberPassword"
+const rememberUserName = "rememberUserName";
+const rememberPassword = "rememberPassword";
 
 const LoginForm = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [rememberMe, setRememberMe] = useState(false);
+    
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState("");
+    const [snackbarSeverity, setSnackbarSeverity] = useState("success");
 
     const { login } = useContext(AuthContext);
     const history = useHistory();
@@ -34,7 +37,6 @@ const LoginForm = () => {
 
     const handleLogin = async (event) => {
         event.preventDefault();
-        setError("");
 
         try {
             await login(username, password);
@@ -45,11 +47,20 @@ const LoginForm = () => {
                 localStorage.removeItem(rememberUserName);
                 localStorage.removeItem(rememberPassword);
             }
+            setSnackbarMessage("Login successful!");
+            setSnackbarSeverity("success");
+            setOpenSnackbar(true);
             history.push("/");
         } catch (error) {
-            setError(error);
+            setSnackbarMessage("Login failed. Please check your credentials.");
+            setSnackbarSeverity("error");
+            setOpenSnackbar(true);
         }
     }
+
+    const handleCloseSnackbar = () => {
+        setOpenSnackbar(false);
+    };
 
     return (
         <Container maxWidth="xs">
@@ -61,11 +72,10 @@ const LoginForm = () => {
                 minHeight="100vh"
             >
                 <Typography variant="h5" gutterBottom>
-                Log In
+                    Log In
                 </Typography>
-                {error && <Alert severity="error">{error}</Alert>}
 
-                <form onSubmit={handleLogin} style={{ width: "100%"}}>
+                <form onSubmit={handleLogin} style={{ width: "100%" }}>
                     <TextField 
                         label="User" 
                         fullWidth 
@@ -84,31 +94,41 @@ const LoginForm = () => {
                         required
                         InputProps={{
                             endAdornment: (
-                            <InputAdornment position="end">
-                                <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-                                {showPassword ? <VisibilityOff /> : <Visibility />}
-                                </IconButton>
-                            </InputAdornment>
+                                <InputAdornment position="end">
+                                    <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
+                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
                             ),
                         }}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
                     <Button variant="contained" color="primary" fullWidth style={{ marginTop: 20 }} type="submit">
-                    Log In
+                        Log In
                     </Button>
                     {/* Remember me */}
                     <FormControlLabel
-                        control={<Checkbox checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)}/>}
+                        control={<Checkbox checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />}
                         label="Remember me"
                         style={{ marginTop: 10 }}
                     />
                     <Typography variant="body2" style={{ marginTop: 10 }}>
-                    Don't you have an account? <a href="/register" style={{ color: "#1976d2", textDecoration: "none" }}>Register</a>
+                        Don't you have an account? <a href="/register" style={{ color: "#1976d2", textDecoration: "none" }}>Register</a>
                     </Typography>
                 </form>
                 
             </Box>
+
+            <Snackbar
+                open={openSnackbar}
+                autoHideDuration={6000}
+                onClose={handleCloseSnackbar}
+            >
+                <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: '100%' }}>
+                    {snackbarMessage}
+                </Alert>
+            </Snackbar>
         </Container>
     );
 };

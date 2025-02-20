@@ -1,7 +1,8 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
-
-import { TextField, Button, MenuItem, Select, InputLabel, FormControl, Typography, Box, Grid, Avatar } from "@mui/material";
+import {
+    TextField, Button, MenuItem, Select, InputLabel, FormControl, Typography, Box, Grid, Avatar, Snackbar, Alert
+} from "@mui/material";
 import { Save, ArrowBack } from "@mui/icons-material";
 import { DesktopDatePicker } from "@mui/x-date-pickers";
 
@@ -9,8 +10,6 @@ import NavBar from "./NavBar";
 import ClientService from "../services/ClientService";
 import InterestService from "../services/InterestService";
 import AuthContext from "../context/AuthContext";
-
-
 
 const ClientMaintenancePage = () => {
     const { userData } = useContext(AuthContext);
@@ -33,6 +32,10 @@ const ClientMaintenancePage = () => {
         interest: ""
     });
 
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState("");
+    const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+
     useEffect(() => {
         fetchInterests();
         if (clientId) {
@@ -50,47 +53,57 @@ const ClientMaintenancePage = () => {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setClient((prev) => ({ ...prev, [name]: value }));
-    }
+    };
 
     const handleDateChange = (name, newValue) => {
         setClient((prev) => ({ ...prev, [name]: newValue }));
-    }
+    };
 
     const fetchClientDetails = async (id) => {
         try {
             const clientData = await ClientService.get(id);
             setClient(clientData);
         } catch (error) {
-            console.error('Error fetching client details:', error);
+            setSnackbarMessage("Error fetching client details");
+            setSnackbarSeverity("error");
         }
-    }
+    };
 
     const fetchInterests = async () => {
         try {
             const response = await InterestService.list();
-            setInterests(response); 
+            setInterests(response);
         } catch (error) {
-            console.error('Error fetching interests:', error);
+            setSnackbarMessage("Error fetching interests");
+            setSnackbarSeverity("error");
         }
-    }
+    };
 
     const handleSubmit = async () => {
         setLoading(true);
         try {
             if (clientId) {
                 await ClientService.update(clientId, client, userData?.userid);
-                alert("Client updated successfully");
-            }
-            else {
+                setSnackbarMessage("Client updated successfully");
+                setSnackbarSeverity("success");
+            } else {
                 await ClientService.create(client, userData?.userid);
-                alert("Client created successfully");
+                setSnackbarMessage("Client created successfully");
+                setSnackbarSeverity("success");
             }
+            setOpenSnackbar(true);
             history.push("/clients");
         } catch (error) {
-            alert("Error creating client: " + error.message);
+            setSnackbarMessage("Error creating/updating client");
+            setSnackbarSeverity("error");
+            setOpenSnackbar(true);
         } finally {
             setLoading(false);
         }
+    };
+
+    const handleCloseSnackbar = () => {
+        setOpenSnackbar(false);
     };
 
     return (
@@ -165,8 +178,18 @@ const ClientMaintenancePage = () => {
                     </Grid>
                 </Grid>
             </Box>
+
+            {/* Snackbar for success or error messages */}
+            <Snackbar
+                open={openSnackbar}
+                autoHideDuration={6000}
+                onClose={handleCloseSnackbar}
+            >
+                <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: '100%' }}>
+                    {snackbarMessage}
+                </Alert>
+            </Snackbar>
         </Box>
-        
     );
 };
 
