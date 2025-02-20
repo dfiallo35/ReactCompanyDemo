@@ -31,8 +31,8 @@ const mapClientToApi = (client, userId) => {
         sexo: mapGenderToApi(client.gender),
         resennaPersonal: client.review,
         interesFK: client.interest,
-        imagen: "",
-        usuarioId: String(userId)
+        imagen: client.image,
+        usuarioId: String(userId),
     };
     return payload
 }
@@ -51,6 +51,7 @@ const mapApiToClient = (client) => {
         address: client.direccion,
         review: client.resenaPersonal,
         interest: client.interesesId,
+        image: client.imagen,
     };
     return payload
 }

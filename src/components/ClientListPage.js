@@ -70,7 +70,6 @@ const ClientListPage = () => {
             <NavBar />
 
             <Box component="main" sx={{ flexGrow: 1, p: 3, bgcolor: "#f5f5f5", minHeight: "100vh" }}>
-                {/* Search and Actions */}
                 <Box mt={8} p={2} component={Paper}>
                     <Typography variant="h5">Consult Clients</Typography>
                     <Box display="flex" gap={2} my={2}>
@@ -100,7 +99,6 @@ const ClientListPage = () => {
                     </Box>
                 </Box>
 
-                {/* Client Table */}
                 <TableContainer component={Paper} sx={{ mt: 2 }}>
                     <Table>
                         <TableHead>

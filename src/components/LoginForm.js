@@ -107,7 +107,6 @@ const LoginForm = () => {
                     <Button variant="contained" color="primary" fullWidth style={{ marginTop: 20 }} type="submit">
                         Log In
                     </Button>
-                    {/* Remember me */}
                     <FormControlLabel
                         control={<Checkbox checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />}
                         label="Remember me"

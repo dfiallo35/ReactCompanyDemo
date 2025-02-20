@@ -33,7 +33,6 @@ const RegisterForm = () => {
         setEmailError("");
         setPasswordError("");
 
-        // Validar email y contraseña antes de enviar
         if (!validateEmail(email)) {
             setEmailError("Invalid email format");
             return;
@@ -118,7 +117,6 @@ const RegisterForm = () => {
                 </form>
             </Box>
 
-            {/* Snackbar for success or error messages */}
             <Snackbar
                 open={openSnackbar}
                 autoHideDuration={6000}

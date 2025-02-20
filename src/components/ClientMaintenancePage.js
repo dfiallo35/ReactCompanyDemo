@@ -29,7 +29,8 @@ const ClientMaintenancePage = () => {
         otherPhone: "",
         address: "",
         review: "",
-        interest: ""
+        interest: "",
+        image: ""
     });
 
     const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -57,6 +58,17 @@ const ClientMaintenancePage = () => {
 
     const handleDateChange = (name, newValue) => {
         setClient((prev) => ({ ...prev, [name]: newValue }));
+    };
+
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setClient((prev) => ({ ...prev, image: reader.result }));
+            };
+            reader.readAsDataURL(file);
+        }
     };
 
     const fetchClientDetails = async (id) => {
@@ -112,7 +124,11 @@ const ClientMaintenancePage = () => {
 
             <Box component="main" mt={8} p={2} sx={{ flexGrow: 1, p: 3, bgcolor: "#f5f5f5", minHeight: "100vh" }}>
                 <Box sx={{ display: 'flex', alignItems: 'center' }} mb={4}>
-                    <Avatar sx={{ width: 80, height: 80 }} />
+                    <Avatar
+                        sx={{ width: 80, height: 80, cursor: "pointer" }}
+                        src={client.image || ""}
+                        onClick={() => document.getElementById('imageInput').click()}
+                    />
                     <Typography variant="h5" gutterBottom sx={{ ml: 2 }}>
                         Client Maintenance
                     </Typography>
@@ -168,6 +184,15 @@ const ClientMaintenancePage = () => {
                             </Select>
                         </FormControl>
                     </Grid>
+
+                    <input
+                        type="file"
+                        id="imageInput"
+                        hidden
+                        onChange={handleImageChange}
+                        accept="image/*"
+                    />
+
                     <Grid item xs={12} container justifyContent="space-between">
                         <Button variant="contained" startIcon={<Save />} onClick={handleSubmit} disabled={loading}>
                             {loading ? "Saving..." : "Save"}
@@ -179,7 +204,6 @@ const ClientMaintenancePage = () => {
                 </Grid>
             </Box>
 
-            {/* Snackbar for success or error messages */}
             <Snackbar
                 open={openSnackbar}
                 autoHideDuration={6000}
